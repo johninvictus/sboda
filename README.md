@@ -1,6 +1,12 @@
 # Sboda
 
 
+## Database technology
+To query for radius of two locations I have decided to use Postgres with  [`POST GIS`](https://postgis.net) since it very advanced and offers all the required features and more.
+> To make quering easy I have added [`geo`](https://github.com/bryanjos/geo) and  [`geo_postgis`](https://github.com/bryanjos/geo_postgis).
+
+
+
 
 
 ## Default instructions
