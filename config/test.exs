@@ -15,4 +15,6 @@ config :sboda, Sboda.Repo,
   password: "postgres",
   database: "sboda_test",
   hostname: "localhost",
-  pool: Ecto.Adapters.SQL.Sandbox
+  pool: Ecto.Adapters.SQL.Sandbox,
+  adapter: Ecto.Adapters.Postgres,
+  types: Sboda.PostgresTypes
