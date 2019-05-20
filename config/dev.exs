@@ -72,4 +72,6 @@ config :sboda, Sboda.Repo,
   password: "postgres",
   database: "sboda_dev",
   hostname: "localhost",
-  pool_size: 10
+  pool_size: 10,
+  adapter: Ecto.Adapters.Postgres,
+  types: Sboda.PostgresTypes
