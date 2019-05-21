@@ -6,18 +6,18 @@ defmodule Sboda.MarketingTest do
   describe "promocodes" do
     alias Sboda.Marketing.Promocode
 
-    test "check if promocode changeset is generating the desired struct" do
-      p_data = %{
-        title: "SAFE_BODA_EVENT",
-        lat: 43.0387105,
-        logt: -87.9074701,
-        expir_str: "2019-07-01 23:00:07",
-        worth_str: "250.00",
-        distance: 400.3,
-        currency: "KES",
-        active: true
-      }
+    @data_attrs %{
+      title: "SAFE_BODA_EVENT",
+      lat: 43.0387105,
+      logt: -87.9074701,
+      expir_str: "2019-07-01 23:00:07",
+      worth_str: "250.00",
+      distance: 400.3,
+      currency: "KES",
+      active: true
+    }
 
+    test "check if promocode changeset is generating the desired struct" do
       expected_p_data = %{
         currency: "KES",
         distance: 400.3,
@@ -32,9 +32,14 @@ defmodule Sboda.MarketingTest do
         active: true
       }
 
-      %Ecto.Changeset{changes: changes} = Promocode.changeset(%Promocode{}, p_data)
+      %Ecto.Changeset{changes: changes} = Promocode.changeset(%Promocode{}, @data_attrs)
 
       assert changes == expected_p_data
     end
+  end
+
+  test "create_promocode/1 with valid data creates a promocode" do
+    assert {:ok, %Sboda.Marketing.Promocode{} = promo} = Marketing.create_promocode(@data_attrs)
+    assert promo.title == @data_attrs.title
   end
 end
