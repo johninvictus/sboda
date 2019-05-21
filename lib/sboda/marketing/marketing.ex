@@ -54,6 +54,10 @@ defmodule Sboda.Marketing do
 
   @doc """
   update promocode / configure promo code
+
+   iex> Sboda.Marketing.update_promocode(%Promocode{})
+    %Sboda.Marketing.Promocode{}
+
   """
   def update_promocode(%Promocode{} = promocode, attrs) do
     promocode

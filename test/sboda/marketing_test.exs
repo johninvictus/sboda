@@ -18,6 +18,8 @@ defmodule Sboda.MarketingTest do
       active: true
     }
 
+
+
     def promocode_fixture(attr \\ Map.new()) do
       {:ok, promo} =
         attr
@@ -123,5 +125,12 @@ defmodule Sboda.MarketingTest do
 
     assert [%Sboda.Marketing.Promocode{} = promo] = Marketing.get_active_promocodes()
     assert promo.title == "SAFE_BODA_EVENT_1"
+  end
+
+
+  test "update_promocode" do
+    promocode = promocode_fixture()
+    assert {:ok, %Sboda.Marketing.Promocode{} = code } = Marketing.update_promocode(promocode, %{title: "SAFE_BODA_EVENT_1"})
+    assert code.title == "SAFE_BODA_EVENT_1"
   end
 end
