@@ -5,6 +5,7 @@ defmodule Sboda.MarketingTest do
 
   describe "promocodes" do
     alias Sboda.Marketing.Promocode
+    
 
     @data_attrs %{
       title: "SAFE_BODA_EVENT",

@@ -8,9 +8,10 @@ defmodule Sboda.Marketing do
 
   alias Sboda.Marketing.Promocode
 
-  @doc """ 
+
+  @doc """
   Creates the promocode when given a Map.
-  
+
   # Example
     iex> Sboda.Marketing.create_promocode(%{ all data here})
       {:ok, %Sboda.Marketing.Promocode{}}
@@ -22,6 +23,17 @@ defmodule Sboda.Marketing do
   def create_promocode(attr \\ Map.new()) do
     %Promocode{}
     |> Promocode.changeset(attr)
-    |> Repo.insert
+    |> Repo.insert()
+  end
+
+  @doc """
+  Returns all promocodes in the database
+
+   ## Example
+
+    iex> Sboda.Marketing.get_all_pomocodes()
+  """
+  def get_all_pomocodes do
+    Promocode |> Repo.all()
   end
 end
