@@ -48,7 +48,6 @@ defmodule Sboda.Marketing.Promocode do
       :logt,
       :expir_str,
       :worth_str,
-      :active,
       :distance,
       :currency
     ])
@@ -96,7 +95,7 @@ defmodule Sboda.Marketing.Promocode do
       %Ecto.Changeset{valid?: true} ->
         data = changeset |> apply_changes()
         m_ob = Money.new("#{data.worth_str} " <> "#{data.currency}")
-        put_change(changeset, :worth_str, m_ob)
+        put_change(changeset, :worth, m_ob)
 
       %Ecto.Changeset{valid?: false} ->
         changeset
