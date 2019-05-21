@@ -54,7 +54,7 @@ defmodule Sboda.Marketing do
 
 
   # will generate a query to fetch all active promocodes without pagination
-  # I have use this function, so that I can reuse it later (can be resused multiple times)
+  # I have used this function, so that I can reuse it later (can be resused multiple times)
   defp active_promo_query(query) do
     # using the UTC time, now sure which is the best time formart to use
     utc_now = NaiveDateTime.utc_now()

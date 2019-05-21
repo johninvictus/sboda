@@ -27,6 +27,57 @@ defmodule Sboda.MarketingTest do
       promo
     end
 
+    def multiple_promocodes_fixture do
+      # promocodes to test expire date and active = true
+      # four possible scenarios 
+      data_test = [
+        %{
+          title: "SAFE_BODA_EVENT_1",
+          lat: 43.0387105,
+          logt: -87.9074701,
+          expir_str: "2029-07-01 23:00:07",
+          worth_str: "250.00",
+          distance: 400.3,
+          currency: "KES",
+          active: true
+        },
+        %{
+          title: "SAFE_BODA_EVENT_2",
+          lat: 43.0387105,
+          logt: -87.9074701,
+          expir_str: "2019-07-01 23:00:07",
+          worth_str: "250.00",
+          distance: 400.3,
+          currency: "KES",
+          active: false
+        },
+        %{
+          title: "SAFE_BODA_EVENT_3",
+          lat: 43.0387105,
+          logt: -87.9074701,
+          expir_str: "2018-07-01 23:00:07",
+          worth_str: "250.00",
+          distance: 400.3,
+          currency: "KES",
+          active: false
+        },
+        %{
+          title: "SAFE_BODA_EVENT_4",
+          lat: 43.0387105,
+          logt: -87.9074701,
+          expir_str: "2018-07-01 23:00:07",
+          worth_str: "250.00",
+          distance: 400.3,
+          currency: "KES",
+          active: true
+        }
+      ]
+
+      Enum.each(data_test, fn(params) -> 
+        params |> Marketing.create_promocode()
+      end)
+    end
+
     test "check if promocode changeset is generating the desired struct" do
       expected_p_data = %{
         currency: "KES",
@@ -54,7 +105,6 @@ defmodule Sboda.MarketingTest do
   end
 
   test "list all promocodes" do
-
     # null the virtual fields, for test purposes
     promocodes = %{
       promocode_fixture()
@@ -66,5 +116,12 @@ defmodule Sboda.MarketingTest do
     }
 
     assert Marketing.get_all_promocodes() == [promocodes]
+  end
+
+  test "get_active_promocodes" do
+    multiple_promocodes_fixture()
+
+    assert [%Sboda.Marketing.Promocode{} = promo] = Marketing.get_active_promocodes()
+    assert promo.title == "SAFE_BODA_EVENT_1"
   end
 end
