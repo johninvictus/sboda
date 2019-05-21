@@ -52,6 +52,16 @@ defmodule Sboda.Marketing do
     |> Repo.all()
   end
 
+  @doc """
+  update promocode / configure promo code
+  """
+  def update_promocode(%Promocode{} = promocode, attrs) do
+    promocode
+    |> Promocode.update_changeset(attrs)
+    |> Repo.update
+  end
+
+
 
   # will generate a query to fetch all active promocodes without pagination
   # I have used this function, so that I can reuse it later (can be resused multiple times)

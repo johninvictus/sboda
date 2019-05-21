@@ -10,6 +10,7 @@ defmodule Sboda.Marketing.Promocode do
   import Ecto.Changeset
 
   alias Sboda.Money
+  alias Sboda.Marketing.Promocode
 
   @type_currency_include ~w(KES UGX)
 
@@ -60,6 +61,17 @@ defmodule Sboda.Marketing.Promocode do
     |> create_money()
   end
 
+  @doc """
+  Create changet to enable update
+
+  Use this changeset to update stuff
+  """
+  def update_changeset(promocode, attrs) do
+    promocode
+    |> prepare_promocode()
+    |> changeset(attrs)
+  end
+
   # This functions takes in latitude and longitude and converts them into a Geo.Point
   defp create_point(changeset) do
     if(changeset.valid?) do
@@ -100,5 +112,30 @@ defmodule Sboda.Marketing.Promocode do
       %Ecto.Changeset{valid?: false} ->
         changeset
     end
+  end
+
+  # Prepare promocode struct for update by adding virtual fields to prevent required error
+  defp prepare_promocode(%Promocode{} = promocode) do
+    %Promocode{
+      expir: exp,
+      point: %Geo.Point{coordinates: {log, lat}, properties: %{}, srid: 4326},
+      worth: pesa
+    } = promocode
+
+    # get money string
+    w_str =
+      pesa
+      |> Sboda.Money.to_string()
+      |> String.split(" ")
+      |> Enum.at(0)
+
+    %{
+      promocode
+      | expir_str: NaiveDateTime.to_string(exp),
+        lat: lat,
+        logt: log,
+        currency: pesa.currency,
+        worth_str: w_str
+    }
   end
 end
