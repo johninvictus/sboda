@@ -65,6 +65,6 @@ defmodule Sboda.MarketingTest do
         worth_str: nil
     }
 
-    assert Marketing.get_all_pomocodes() == [promocodes]
+    assert Marketing.get_all_promocodes() == [promocodes]
   end
 end
