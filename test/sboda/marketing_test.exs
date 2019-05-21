@@ -5,7 +5,7 @@ defmodule Sboda.MarketingTest do
 
   describe "promocodes" do
     alias Sboda.Marketing.Promocode
-    
+    alias Sboda.Money
 
     @data_attrs %{
       title: "SAFE_BODA_EVENT",
@@ -18,6 +18,15 @@ defmodule Sboda.MarketingTest do
       active: true
     }
 
+    def promocode_fixture(attr \\ Map.new()) do
+      {:ok, promo} =
+        attr
+        |> Enum.into(@data_attrs)
+        |> Marketing.create_promocode()
+
+      promo
+    end
+
     test "check if promocode changeset is generating the desired struct" do
       expected_p_data = %{
         currency: "KES",
@@ -29,7 +38,7 @@ defmodule Sboda.MarketingTest do
         point: %Geo.Point{coordinates: {-87.9074701, 43.0387105}, properties: %{}, srid: 4326},
         title: "SAFE_BODA_EVENT",
         worth_str: "250.00",
-        worth: %Sboda.Money{cents: 25000, currency: "KES"},
+        worth: %Money{cents: 25000, currency: "KES"},
         active: true
       }
 
@@ -42,5 +51,20 @@ defmodule Sboda.MarketingTest do
   test "create_promocode/1 with valid data creates a promocode" do
     assert {:ok, %Sboda.Marketing.Promocode{} = promo} = Marketing.create_promocode(@data_attrs)
     assert promo.title == @data_attrs.title
+  end
+
+  test "list all promocodes" do
+
+    # null the virtual fields, for test purposes
+    promocodes = %{
+      promocode_fixture()
+      | currency: nil,
+        expir_str: nil,
+        lat: nil,
+        logt: nil,
+        worth_str: nil
+    }
+
+    assert Marketing.get_all_pomocodes() == [promocodes]
   end
 end
