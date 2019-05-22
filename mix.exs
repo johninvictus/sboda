@@ -45,7 +45,8 @@ defmodule Sboda.MixProject do
       {:plug_cowboy, "~> 2.0"},
       {:geo, "~> 3.0"},
       {:geo_postgis, "~> 3.1"},
-      {:poison, "~> 3.1"}
+      {:poison, "~> 3.1"},
+      {:geocalc, "~> 0.5"}
     ]
   end
 

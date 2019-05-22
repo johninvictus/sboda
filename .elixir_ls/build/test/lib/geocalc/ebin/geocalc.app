@@ -1,0 +1,10 @@
+{application,geocalc,
+             [{applications,[kernel,stdlib,elixir,logger]},
+              {description,"Calculate distance, bearing and more between latitude/longitude points.\n"},
+              {modules,['Elixir.Geocalc','Elixir.Geocalc.Calculator',
+                        'Elixir.Geocalc.Calculator.Polygon',
+                        'Elixir.Geocalc.Point','Elixir.Geocalc.Point.List',
+                        'Elixir.Geocalc.Point.Map',
+                        'Elixir.Geocalc.Point.Tuple']},
+              {registered,[]},
+              {vsn,"0.7.2"}]}.

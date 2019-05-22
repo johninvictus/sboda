@@ -80,13 +80,17 @@ defmodule Sboda.Marketing do
 
   @doc """
   This query will check if the provided promocode is within the given radius
+  > Pass data of the event
+  > This will return all promo codes within the event
+
+  eg. Since this feature is not requested this function is an extra
+      This query requires the **POSTGIS** extention
   """
-  def within_event_radius(query, point, radius_in_m, promo_title) do
+  def within_event_radius(query, point, radius_in_m) do
     {lng, lat} = point.coordinates
 
     from promo in query,
       where:
-        promo.title == ^promo_title and
           fragment(
             "ST_DWithin(?::geography, ST_SetSRID(ST_MakePoint(?, ?), ?), ?)",
             promo.point,
