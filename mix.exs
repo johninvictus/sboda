@@ -20,7 +20,7 @@ defmodule Sboda.MixProject do
   def application do
     [
       mod: {Sboda.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools, :httpoison]
     ]
   end
 
@@ -46,7 +46,9 @@ defmodule Sboda.MixProject do
       {:geo, "~> 3.0"},
       {:geo_postgis, "~> 3.1"},
       {:poison, "~> 3.1"},
-      {:geocalc, "~> 0.5"}
+      {:geocalc, "~> 0.5"},
+      {:httpoison, "~> 1.5.1"},
+      {:json, "~> 1.0"}
     ]
   end
 
