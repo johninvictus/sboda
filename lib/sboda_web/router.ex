@@ -24,5 +24,6 @@ defmodule SbodaWeb.Router do
     pipe_through :api
 
     resources "/promocodes", PromocodeController, only: [:index]
+    post("ride/request", RideController, :request)
   end
 end
