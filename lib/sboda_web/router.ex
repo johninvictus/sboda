@@ -19,8 +19,10 @@ defmodule SbodaWeb.Router do
     get "/", PageController, :index
   end
 
-  # Other scopes may use custom stacks.
-  # scope "/api", SbodaWeb do
-  #   pipe_through :api
-  # end
+  # can use graphql to cut out versioning
+  scope "/api/v1", SbodaWeb do
+    pipe_through :api
+
+    resources "/promocodes", PromocodeController, only: [:index]
+  end
 end

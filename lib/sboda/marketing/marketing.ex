@@ -32,6 +32,7 @@ defmodule Sboda.Marketing do
 
     iex> Sboda.Marketing.get_all_pomocodes()
   """
+  @spec get_all_promocodes() :: list(%Promocode{}) | []
   def get_all_promocodes do
     Promocode |> Repo.all()
   end
@@ -49,6 +50,23 @@ defmodule Sboda.Marketing do
 
   def get_promocode_by_title(title) do
     Promocode |> Repo.get_by(title: title)
+  end
+
+  @doc """
+    get promocode by ID
+
+    ## Example
+
+  valid id
+  iex> Sboda.Marketing.get_promocode_by_id/1 
+      %Sboda.Marketing.Promocode{}
+
+  invalid id
+   iex> Sboda.Marketing.get_promocode_by_id/1
+      nil
+  """
+  def get_promocode_by_id(id) do
+    Promocode |> Repo.get(id)
   end
 
   @doc """
@@ -162,7 +180,6 @@ defmodule Sboda.Marketing do
 
         if Geocalc.within?(promo.distance, center, d_p_point) do
           {:ok, promo}
-
         else
           {:bound_error, "given point cant use the promocode"}
         end
