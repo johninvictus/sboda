@@ -34,8 +34,8 @@ defmodule Sboda.Ride do
     if(changeset.valid?) do
       data = changeset |> apply_changes()
 
-      origin = origin_latitude <> origin_longitude
-      destination = destination_latitude <> destination_longitude
+      origin = "#{origin_latitude},#{origin_longitude}"
+      destination = "#{destination_latitude},#{destination_longitude}"
 
       case(DirectionApi.get_polyline(origin, destination)) do
         {:ok, polyline_string, decoded_polyline} ->
@@ -50,6 +50,6 @@ defmodule Sboda.Ride do
   end
 
   def request(_) do
-    {:param_error, "Params provided don't have correct fomart"}
+    {:error, "Params provided don't have correct fomart"}
   end
 end
