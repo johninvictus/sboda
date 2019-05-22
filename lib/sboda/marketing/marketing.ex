@@ -62,19 +62,38 @@ defmodule Sboda.Marketing do
   def update_promocode(%Promocode{} = promocode, attrs) do
     promocode
     |> Promocode.update_changeset(attrs)
-    |> Repo.update
+    |> Repo.update()
   end
 
-
-
-  # will generate a query to fetch all active promocodes without pagination
-  # I have used this function, so that I can reuse it later (can be resused multiple times)
-  defp active_promo_query(query) do
-    # using the UTC time, now sure which is the best time formart to use
+  @doc """
+    will generate a query to fetch all active promocodes without pagination
+    I have used this function, so that I can reuse it later (can be resused multiple times)
+  """
+  def active_promo_query(query) do
+    # using the UTC time, not sure which is the best time formart to use
     utc_now = NaiveDateTime.utc_now()
 
     from q in query,
-      where: (q.expir >= ^utc_now and q.active == true),
+      where: q.expir >= ^utc_now and q.active == true,
       order_by: q.inserted_at
+  end
+
+  @doc """
+  This query will check if the provided promocode is within the given radius
+  """
+  def within_event_radius(query, point, radius_in_m, promo_title) do
+    {lng, lat} = point.coordinates
+
+    from promo in query,
+      where:
+        promo.title == ^promo_title and
+          fragment(
+            "ST_DWithin(?::geography, ST_SetSRID(ST_MakePoint(?, ?), ?), ?)",
+            promo.point,
+            ^lng,
+            ^lat,
+            ^point.srid,
+            ^radius_in_m
+          )
   end
 end
