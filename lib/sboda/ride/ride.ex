@@ -4,6 +4,8 @@ defmodule Sboda.Ride do
   """
 
   alias Sboda.ValidateRequest
+  import Ecto.Changeset
+  alias Sboda.DirectionApi
 
   @doc """
   This function will be provided with params which are
@@ -30,7 +32,18 @@ defmodule Sboda.Ride do
     changeset = ValidateRequest.changeset(%ValidateRequest{}, param)
 
     if(changeset.valid?) do
-      #
+      data = changeset |> apply_changes()
+
+      origin = origin_latitude <> origin_longitude
+      destination = destination_latitude <> destination_longitude
+
+      case(DirectionApi.get_polyline(origin, destination)) do
+        {:ok, polyline_string, decoded_polyline} ->
+          {:ok, data.promo, polyline_string, decoded_polyline}
+
+        :error ->
+          {:error, "An error occurred while fetching the polylines, try again"}
+      end
     else
       {:changeset_error, changeset}
     end
