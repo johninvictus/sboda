@@ -48,7 +48,8 @@ defmodule Sboda.MixProject do
       {:poison, "~> 3.1"},
       {:geocalc, "~> 0.5"},
       {:httpoison, "~> 1.5.1"},
-      {:json, "~> 1.0"}
+      {:json, "~> 1.0"},
+      {:polyline, "~> 1.2"}
     ]
   end
 

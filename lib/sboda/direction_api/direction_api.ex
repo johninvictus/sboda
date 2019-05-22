@@ -16,23 +16,41 @@ defmodule Sboda.DirectionApi do
     |> decode_response()
   end
 
+  @doc """
+  extract the polyline string and encode the polystring
+  iex> decode_response(origin, destination)
+  {:ok, "}~teGtlpwOBbArFYH`CXA",
+  [
+  {-87.90747, 43.03871},
+  ...
+  ]}
+
+  iex> decode_response(origin_wrong, destination_wrong)
+  :error
+  """
+  @spec decode_response({:ok, %HTTPoison.Response{}}) :: {:ok, String.t(), list()} | atom()
   def decode_response({:ok, %HTTPoison.Response{body: body, status_code: 200}}) do
     case JSON.decode(body) do
       {:ok, json_map} ->
-        polyline_string =
-          json_map
-          |> get_in(["routes"])
-          |> Enum.at(0)
-          |> get_in(["overview_polyline", "points"])
+        status = json_map |> get_in(["status"])
 
-        {:ok, polyline_string}
+        if(status == "NOT_FOUND") do
+          :error
+        else
+          polyline_string =
+            json_map
+            |> get_in(["routes"])
+            |> Enum.at(0)
+            |> get_in(["overview_polyline", "points"])
 
-      _->
+          {:ok, polyline_string, Polyline.decode(polyline_string)}
+        end
+
+      _ ->
         :error
     end
   end
 
-  @spec decode_response(any()) :: atom()
   def decode_response(_), do: :error
 
   defp get_api_key do
