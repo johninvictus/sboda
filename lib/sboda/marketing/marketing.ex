@@ -100,4 +100,14 @@ defmodule Sboda.Marketing do
             ^radius_in_m
           )
   end
+
+  @doc """
+    This will fetch all active promocodes within a give radius
+  """
+  def get_active_promocodes_with(center_point, radius_in_m) do
+    Promocode
+    |> within_event_radius(center_point, radius_in_m)
+    |> active_promo_query()
+    |> Repo.all()
+  end
 end

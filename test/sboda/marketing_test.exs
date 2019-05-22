@@ -45,8 +45,8 @@ defmodule Sboda.MarketingTest do
         },
         %{
           title: "SAFE_BODA_EVENT_2",
-          lat: 43.0387105,
-          logt: -87.9074701,
+          lat: 43.0372896,
+          logt: -87.9082446,
           expir_str: "2019-07-01 23:00:07",
           worth_str: "250.00",
           distance: 400.3,
@@ -55,8 +55,8 @@ defmodule Sboda.MarketingTest do
         },
         %{
           title: "SAFE_BODA_EVENT_3",
-          lat: 43.0387105,
-          logt: -87.9074701,
+          lat: 43.035253,
+          logt: -87.9091676,
           expir_str: "2018-07-01 23:00:07",
           worth_str: "250.00",
           distance: 400.3,
@@ -65,8 +65,8 @@ defmodule Sboda.MarketingTest do
         },
         %{
           title: "SAFE_BODA_EVENT_4",
-          lat: 43.0387105,
-          logt: -87.9074701,
+          lat: 43.0020021,
+          logt: -87.9033059,
           expir_str: "2018-07-01 23:00:07",
           worth_str: "250.00",
           distance: 400.3,
@@ -78,6 +78,54 @@ defmodule Sboda.MarketingTest do
       Enum.each(data_test, fn(params) -> 
         params |> Marketing.create_promocode()
       end)
+    end
+
+    def to_test_promocodes_around_fixture do
+      data_test = [
+        %{
+          title: "SAFE_BODA_EVENT_1",
+          lat: 43.0387105,
+          logt: -87.9074701,
+          expir_str: "2029-07-01 23:00:07",
+          worth_str: "250.00",
+          distance: 400.3,
+          currency: "KES",
+          active: true
+        },
+        %{
+          title: "SAFE_BODA_EVENT_2",
+          lat: 43.0372896,
+          logt: -87.9082446,
+          expir_str: "2029-07-01 23:00:07",
+          worth_str: "250.00",
+          distance: 400.3,
+          currency: "KES",
+          active: false
+        },
+        %{
+          title: "SAFE_BODA_EVENT_3",
+          lat: 43.035253,
+          logt: -87.9091676,
+          expir_str: "2019-07-01 23:00:07",
+          worth_str: "250.00",
+          distance: 400.3,
+          currency: "KES",
+          active: false
+        },
+        %{
+          title: "SAFE_BODA_EVENT_4",
+          lat: 43.0020021,
+          logt: -87.9033059,
+          expir_str: "2018-07-01 23:00:07",
+          worth_str: "250.00",
+          distance: 400.3,
+          currency: "KES",
+          active: true
+        }
+      ]
+        Enum.each(data_test, fn(params) -> 
+          params |> Marketing.create_promocode()
+        end)
     end
 
     test "check if promocode changeset is generating the desired struct" do
@@ -132,5 +180,12 @@ defmodule Sboda.MarketingTest do
     promocode = promocode_fixture()
     assert {:ok, %Sboda.Marketing.Promocode{} = code } = Marketing.update_promocode(promocode, %{title: "SAFE_BODA_EVENT_1"})
     assert code.title == "SAFE_BODA_EVENT_1"
+  end
+
+  test "within_event_radius" do
+    point = %Geo.Point{coordinates: {-87.9079503, 43.0384303}, srid: 4326}
+    to_test_promocodes_around_fixture()
+    assert  [%Sboda.Marketing.Promocode{} = promo] = Marketing.get_active_promocodes_within(point, 400)
+    assert promo.title == "SAFE_BODA_EVENT_1"
   end
 end
