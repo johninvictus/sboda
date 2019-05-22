@@ -37,6 +37,21 @@ defmodule Sboda.Marketing do
   end
 
   @doc """
+  get promocode by title
+
+  ## Example
+  iex> Sboda.Marketing.get_promocode_by_title/1
+      %Sboda.Marketing.Promocode{}
+
+   iex> Sboda.Marketing.get_promocode_by_title/1
+      nil
+  """
+
+  def get_promocode_by_title(title) do
+    Promocode |> Repo.get_by(title: title)
+  end
+
+  @doc """
   Return only the valid promocodes active = true and expir < date now
 
   ## Example
@@ -91,23 +106,66 @@ defmodule Sboda.Marketing do
 
     from promo in query,
       where:
-          fragment(
-            "ST_DWithin(?::geography, ST_SetSRID(ST_MakePoint(?, ?), ?), ?)",
-            promo.point,
-            ^lng,
-            ^lat,
-            ^point.srid,
-            ^radius_in_m
-          )
+        fragment(
+          "ST_DWithin(?::geography, ST_SetSRID(ST_MakePoint(?, ?), ?), ?)",
+          promo.point,
+          ^lng,
+          ^lat,
+          ^point.srid,
+          ^radius_in_m
+        )
   end
 
   @doc """
     This will fetch all active promocodes within a give radius
   """
-  def get_active_promocodes_with(center_point, radius_in_m) do
+  def get_active_promocodes_within(center_point, radius_in_m) do
     Promocode
     |> within_event_radius(center_point, radius_in_m)
     |> active_promo_query()
     |> Repo.all()
+  end
+
+  @doc """
+  Is destination or pickup location within the radius
+  > Provide the promocode name
+  > check if it exist first
+
+  ## EXAMPLE
+
+  If promocode is not found in the database
+  iex> location_within("Invalid point", %Geo.Point{})
+    {:errorloc, "Invalid promocode"}
+
+  iex> location_within("valid_title", %Geo.Point{})
+   {:ok, %Sboda.Marketing.Promocode{}}
+
+  iex> location_within("valid_title", %Geo.Point{} = far_point)
+     {:bound_error, "given point cant use the promocode"}
+  """
+  def location_within(promo_title, %Geo.Point{} = source_point) do
+    case get_promocode_by_title(promo_title) do
+      nil ->
+        {:errorloc, "Invalid promocode"}
+
+      promo ->
+        %Geo.Point{
+          coordinates: {lgt, lat},
+          properties: %{},
+          srid: 4326
+        } = promo.point
+
+        {d_lgt, d_lat} = source_point.coordinates
+
+        center = [lat, lgt]
+        d_p_point = [d_lat, d_lgt]
+
+        if Geocalc.within?(promo.distance, center, d_p_point) do
+          {:ok, promo}
+
+        else
+          {:bound_error, "given point cant use the promocode"}
+        end
+    end
   end
 end
