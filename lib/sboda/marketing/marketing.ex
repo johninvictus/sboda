@@ -146,7 +146,7 @@ defmodule Sboda.Marketing do
   def location_within(promo_title, %Geo.Point{} = source_point) do
     case get_promocode_by_title(promo_title) do
       nil ->
-        {:errorloc, "Invalid promocode"}
+        {:errorloc, "Promocode not found"}
 
       promo ->
         %Geo.Point{

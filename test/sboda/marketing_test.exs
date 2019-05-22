@@ -18,8 +18,6 @@ defmodule Sboda.MarketingTest do
       active: true
     }
 
-
-
     def promocode_fixture(attr \\ Map.new()) do
       {:ok, promo} =
         attr
@@ -75,7 +73,7 @@ defmodule Sboda.MarketingTest do
         }
       ]
 
-      Enum.each(data_test, fn(params) -> 
+      Enum.each(data_test, fn params ->
         params |> Marketing.create_promocode()
       end)
     end
@@ -123,9 +121,10 @@ defmodule Sboda.MarketingTest do
           active: true
         }
       ]
-        Enum.each(data_test, fn(params) -> 
-          params |> Marketing.create_promocode()
-        end)
+
+      Enum.each(data_test, fn params ->
+        params |> Marketing.create_promocode()
+      end)
     end
 
     test "check if promocode changeset is generating the desired struct" do
@@ -175,17 +174,48 @@ defmodule Sboda.MarketingTest do
     assert promo.title == "SAFE_BODA_EVENT_1"
   end
 
-
   test "update_promocode" do
     promocode = promocode_fixture()
-    assert {:ok, %Sboda.Marketing.Promocode{} = code } = Marketing.update_promocode(promocode, %{title: "SAFE_BODA_EVENT_1"})
+
+    assert {:ok, %Sboda.Marketing.Promocode{} = code} =
+             Marketing.update_promocode(promocode, %{title: "SAFE_BODA_EVENT_1"})
+
     assert code.title == "SAFE_BODA_EVENT_1"
   end
 
   test "within_event_radius" do
     point = %Geo.Point{coordinates: {-87.9079503, 43.0384303}, srid: 4326}
     to_test_promocodes_around_fixture()
-    assert  [%Sboda.Marketing.Promocode{} = promo] = Marketing.get_active_promocodes_within(point, 400)
+
+    assert [%Sboda.Marketing.Promocode{} = promo] =
+             Marketing.get_active_promocodes_within(point, 400)
+
     assert promo.title == "SAFE_BODA_EVENT_1"
+  end
+
+  test "location_within" do
+    promocode = %{
+      promocode_fixture()
+      | currency: nil,
+        expir_str: nil,
+        lat: nil,
+        logt: nil,
+        worth_str: nil
+    }
+
+    destination_point = %Geo.Point{coordinates: {-87.9079503, 43.0384303}, srid: 4326}
+
+    assert Marketing.location_within(promocode.title, destination_point) ==
+             {:ok, promocode}
+
+    destination_point = %Geo.Point{coordinates: {-66.1057, 18.4655}, srid: 4326}
+
+    assert Marketing.location_within(promocode.title, destination_point) ==
+             {:bound_error, "given point cant use the promocode"}
+
+    destination_point = %Geo.Point{coordinates: {-87.9079503, 43.0384303}, srid: 4326}
+
+    assert Marketing.location_within("zero", destination_point) ==
+             {:errorloc, "Promocode not found"}
   end
 end
