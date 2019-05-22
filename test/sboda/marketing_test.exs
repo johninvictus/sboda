@@ -29,7 +29,7 @@ defmodule Sboda.MarketingTest do
 
     def multiple_promocodes_fixture do
       # promocodes to test expire date and active = true
-      # four possible scenarios 
+      # four possible scenarios
       data_test = [
         %{
           title: "SAFE_BODA_EVENT_1",
@@ -191,31 +191,5 @@ defmodule Sboda.MarketingTest do
              Marketing.get_active_promocodes_within(point, 400)
 
     assert promo.title == "SAFE_BODA_EVENT_1"
-  end
-
-  test "location_within" do
-    promocode = %{
-      promocode_fixture()
-      | currency: nil,
-        expir_str: nil,
-        lat: nil,
-        logt: nil,
-        worth_str: nil
-    }
-
-    destination_point = %Geo.Point{coordinates: {-87.9079503, 43.0384303}, srid: 4326}
-
-    assert Marketing.location_within(promocode.title, destination_point) ==
-             {:ok, promocode}
-
-    destination_point = %Geo.Point{coordinates: {-66.1057, 18.4655}, srid: 4326}
-
-    assert Marketing.location_within(promocode.title, destination_point) ==
-             {:bound_error, "given point cant use the promocode"}
-
-    destination_point = %Geo.Point{coordinates: {-87.9079503, 43.0384303}, srid: 4326}
-
-    assert Marketing.location_within("zero", destination_point) ==
-             {:errorloc, "Promocode not found"}
   end
 end
