@@ -1,4 +1,4 @@
-defmodule Sboda.ValidateRequest do
+defmodule Sboda.Ride.ValidateRequest do
   use Ecto.Schema
   import Ecto.Changeset
 

@@ -3,7 +3,7 @@ defmodule Sboda.Ride do
   This module will deal with everything about rides
   """
 
-  alias Sboda.ValidateRequest
+  alias Sboda.Ride.ValidateRequest
   import Ecto.Changeset
   alias Sboda.DirectionApi
 
