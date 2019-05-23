@@ -47,7 +47,7 @@ defmodule Sboda.Marketing do
    iex> Sboda.Marketing.get_promocode_by_title/1
       nil
   """
-
+  @spec get_promocode_by_title(term()) :: %Promocode{} | nil
   def get_promocode_by_title(title) do
     Promocode |> Repo.get_by(title: title)
   end
@@ -83,6 +83,7 @@ defmodule Sboda.Marketing do
    iex> Sboda.Marketing.get_promocode_by_id/1
       nil
   """
+  @spec get_promocode_by_id(any()) :: %Promocode{} | nil
   def get_promocode_by_id(id) do
     Promocode |> Repo.get(id)
   end
@@ -111,6 +112,8 @@ defmodule Sboda.Marketing do
     %Sboda.Marketing.Promocode{}
 
   """
+  @spec update_promocode(%Promocode{}, map()) ::
+          {:ok, Ecto.Schema.t()} | {:error, Ecto.Changeset.t()}
   def update_promocode(%Promocode{} = promocode, attrs) do
     promocode
     |> Promocode.update_changeset(attrs)
@@ -122,10 +125,31 @@ defmodule Sboda.Marketing do
 
     No need to test since update_promocode is already tested.
   """
+  @spec configure_promocode_radius(Ecto.Schema.t(), number()) ::
+          {:ok, Ecto.Schema.t()} | {:error, Ecto.Changeset.t()}
   def configure_promocode_radius(%Promocode{} = promocode, radius_metres) do
     promocode
     |> Promocode.update_changeset(%{distance: radius_metres})
     |> Repo.update()
+  end
+
+  @doc """
+  This function will check if the given title is available before changing it radius
+  """
+  def change_radius(title) do
+    with promocode when is_map(promocode) <- get_promocode_by_title(title),
+         {:ok, promo} <- configure_promocode_radius(promocode, title) do
+      {:ok, promo}
+    else
+      nil ->
+        {:error, "No promo code found"}
+
+      {:error, changeset} ->
+        {:changeset_error, changeset}
+
+      _ ->
+        {:error, "An error occurred"}
+    end
   end
 
   @doc """
@@ -145,7 +169,7 @@ defmodule Sboda.Marketing do
   query to get promocode by title
   """
   def promocode_by_title_query(query, title) do
-    from q in query, where: (q.title == ^title)
+    from q in query, where: q.title == ^title
   end
 
   @doc """

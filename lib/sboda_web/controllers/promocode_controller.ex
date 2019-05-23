@@ -46,4 +46,15 @@ defmodule SbodaWeb.PromocodeController do
       {:error, "Something went wrong"}
     end
   end
+
+  @doc """
+  change radius of promocode when given its title
+  """
+  def title_config(conn, %{title: title}) do
+    with {:ok, promo} <- Marketing.change_radius(title) do
+      conn
+      |> put_status(:ok)
+      |> render("title_config.json", promocode: promo)
+    end
+  end
 end
