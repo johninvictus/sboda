@@ -12,8 +12,7 @@ NOTE: YOU MUST INSTALL POSTGIS IN ORDER TO BE ABLE TO RUN THE PROJECT (Instructi
   4. make sure the postgress password and username is correct inside config/dev.exs and config/test.exs
   5. Create and migrate your database with mix ecto.setup
   6. Install Node.js dependencies with cd assets && npm install
-  7.  Run seed migration `mix run priv/repo/seeds.exs`
-  8. Start Phoenix endpoint with mix phx.server
+  7. Start Phoenix endpoint with mix phx.server
 
 >RUNNING Test
 ``` bash
@@ -130,7 +129,7 @@ destination and origin if promo code is valid and an error otherwise.
 
 ### Extras
 - [x] since am using Postgis I am able to list all active promocodes withing my origin or point.
-- [x] Created endpoints for getting all promocodes, updating radius and getting active promocodes. 
+- [x] Created endpoints for getting all promocodes, updating radius and getting active promocodes.
 
 `Sboda.Marketing.get_active_promocodes_within/2`
 `
