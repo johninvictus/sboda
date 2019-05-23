@@ -14,7 +14,7 @@ alias Sboda.Marketing.Promocode
 
 data_test = [
   %{
-    title: "SAFE_BODA_EVENT_1",
+    title: "SAFE_BODA_EVENT",
     lat: 43.0387105,
     logt: -87.9074701,
     expir_str: "2029-07-01 23:00:07",
@@ -56,7 +56,7 @@ data_test = [
 ]
 
 for param <- data_test do
-Repo.get_by(Promocode, title: param.title) ||
- Promocode.changeset(%Promocode{}, param)
- |> Repo.insert!()
+  Repo.get_by(Promocode, title: param.title) ||
+    Promocode.changeset(%Promocode{}, param)
+    |> Repo.insert!()
 end
