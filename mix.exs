@@ -43,13 +43,12 @@ defmodule Sboda.MixProject do
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
-      {:geo, "~> 3.0"},
-      {:geo_postgis, "~> 3.1"},
       {:poison, "~> 3.1"},
       {:geocalc, "~> 0.5"},
       {:httpoison, "~> 1.5.1"},
       {:json, "~> 1.0"},
-      {:polyline, "~> 1.2"}
+      {:polyline, "~> 1.2"},
+      {:geo, "~> 3.0"}
     ]
   end
 

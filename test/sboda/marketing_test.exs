@@ -182,14 +182,4 @@ defmodule Sboda.MarketingTest do
 
     assert code.title == "SAFE_BODA_EVENT_1"
   end
-
-  test "within_source_radius" do
-    point = %Geo.Point{coordinates: {-87.9079503, 43.0384303}, srid: 4326}
-    to_test_promocodes_around_fixture()
-
-    assert [%Sboda.Marketing.Promocode{} = promo] =
-             Marketing.get_active_promocodes_within(point, 400)
-
-    assert promo.title == "SAFE_BODA_EVENT_1"
-  end
 end

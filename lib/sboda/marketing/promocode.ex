@@ -11,13 +11,14 @@ defmodule Sboda.Marketing.Promocode do
 
   alias Sboda.Money
   alias Sboda.Marketing.Promocode
+  alias Sboda.Gex
 
   @type_currency_include ~w(KES UGX)
 
   schema "promocodes" do
     field :title, :string
     # where the event is located
-    field :point, Geo.PostGIS.Geometry
+    field :point, Gex.Ecto
     field :active, :boolean
     field :expir, :naive_datetime
     field :worth, Money.Ecto

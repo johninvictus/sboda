@@ -15,7 +15,5 @@ config :sboda, SbodaWeb.Endpoint,
 config :sboda, Sboda.Repo,
   username: "postgres",
   password: "postgres",
-  database: "sboda_prod",
-  pool_size: 15,
-  adapter: Ecto.Adapters.Postgres,
-  types: Sboda.PostgresTypes
+  database: "sboda2_prod",
+  pool_size: 15

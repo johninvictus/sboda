@@ -13,8 +13,6 @@ config :logger, level: :warn
 config :sboda, Sboda.Repo,
   username: "postgres",
   password: "postgres",
-  database: "sboda_test",
+  database: "sboda2_test",
   hostname: "localhost",
-  pool: Ecto.Adapters.SQL.Sandbox,
-  adapter: Ecto.Adapters.Postgres,
-  types: Sboda.PostgresTypes
+  pool: Ecto.Adapters.SQL.Sandbox

@@ -70,8 +70,6 @@ config :phoenix, :plug_init_mode, :runtime
 config :sboda, Sboda.Repo,
   username: "postgres",
   password: "postgres",
-  database: "sboda_dev",
+  database: "sboda2_dev",
   hostname: "localhost",
-  pool_size: 10,
-  adapter: Ecto.Adapters.Postgres,
-  types: Sboda.PostgresTypes
+  pool_size: 10

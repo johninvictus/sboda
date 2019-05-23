@@ -136,7 +136,8 @@ defmodule Sboda.Marketing do
   @doc """
   This function will check if the given title is available before changing it radius
   """
-  @spec change_radius(term(), term()) :: {:ok, %Promocode{}} | {:changeset_error, %Ecto.Changeset{}} | {:error, term()}
+  @spec change_radius(term(), term()) ::
+          {:ok, %Promocode{}} | {:changeset_error, %Ecto.Changeset{}} | {:error, term()}
   def change_radius(title, radius) do
     with promocode when is_map(promocode) <- get_promocode_by_title(title),
          {:ok, promo} <- configure_promocode_radius(promocode, radius) do
@@ -171,39 +172,6 @@ defmodule Sboda.Marketing do
   """
   def promocode_by_title_query(query, title) do
     from q in query, where: q.title == ^title
-  end
-
-  @doc """
-  This query will check if the provided promocode is within the given radius
-  > Pass data of the event
-  > This will return all promo codes within the event
-
-  eg. Since this feature is not requested this function is an extra
-      This query requires the **POSTGIS** extention
-  """
-  def within_source_radius(query, point, radius_in_m) do
-    {lng, lat} = point.coordinates
-
-    from promo in query,
-      where:
-        fragment(
-          "ST_DWithin(?::geography, ST_SetSRID(ST_MakePoint(?, ?), ?), ?)",
-          promo.point,
-          ^lng,
-          ^lat,
-          ^point.srid,
-          ^radius_in_m
-        )
-  end
-
-  @doc """
-    This will fetch all active promocodes within a give radius
-  """
-  def get_active_promocodes_within(center_point, radius_in_m) do
-    Promocode
-    |> within_source_radius(center_point, radius_in_m)
-    |> active_promo_query()
-    |> Repo.all()
   end
 
   @doc """

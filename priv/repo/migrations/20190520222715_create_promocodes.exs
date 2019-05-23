@@ -4,7 +4,7 @@ defmodule Sboda.Repo.Migrations.CreatePromocodes do
   def change do
     # create type
     execute("CREATE TYPE moneyz AS ( cents integer, currently varchar );")
-    execute "CREATE EXTENSION IF NOT EXISTS postgis"
+    execute("CREATE TYPE gex AS ( latitude float, longitude float );")
 
     create table(:promocodes) do
       add :title, :string, null: false
@@ -13,16 +13,12 @@ defmodule Sboda.Repo.Migrations.CreatePromocodes do
       # date/time when code expires
       add :expir, :naive_datetime, null: false
       add :worth, :moneyz, null: false
+      add :point, :gex
       add :active, :boolean, default: true, null: false
 
       timestamps()
     end
 
     create(unique_index(:promocodes, [:title]))
-    # This can store a "standard GPS" (epsg4326) coordinate pair {longitude,latitude}.
-    execute("SELECT AddGeometryColumn ('promocodes','point',4326,'POINT',2)")
-
-    # Indexed the point, this will ensure the query runs fast even when dealing with large data sets.
-    execute("CREATE INDEX promocodes_point_index on promocodes USING gist (point)")
   end
 end
