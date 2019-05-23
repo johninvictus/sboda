@@ -83,7 +83,8 @@ iex> mix test
   ```
   Test is done inside: Sboda.MarketingTest
 
--[ X ]- Only valid when user’s pickup or destination is within x radius of the event venue
+**-[ X ]- Only valid when user’s pickup or destination is within x radius of the event venue**
+
      Here I was checking if destination or origin is within the radius of the promocode applied if yes. use it, else: return an error
 <br>
 
@@ -98,7 +99,7 @@ iex> mix test
          Am using [Geocalc](https://github.com/yltsrc/geocalc) libray to check if the detination.origin is within the promocode radius.
 
 **-[ X ]- The promo code radius should be configurable**
-<br>
+</br>
 
    For this I have created a function that when provided with the title of the promo code and the radius it changes the radius.
 
@@ -137,6 +138,8 @@ Endpoint which takes in origin, destination and the promocode title. `@params`
 }
  ```
  To generate the polyline I created a simple **DirectionApi** wrapper to get the polystring and decode into a list of coordinates.
+
+ ![Alt text](/src/master/images/request_ride.png "Postman example query")
 
 ### Extras
 **-[ X ]-** Created endpoints for getting all promo codes, updating radius and getting active promo codes.
