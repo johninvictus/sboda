@@ -116,6 +116,17 @@ defmodule Sboda.Marketing do
   end
 
   @doc """
+    Configure the radius of the promocode as required by the interviewer
+
+    No need to test since update_promocode is already tested.
+  """
+  def configure_promocode_radius(%Promocode{} = promocode, radius_metres) do
+    promocode
+    |> Promocode.update_changeset(%{distance: radius_metres})
+    |> Repo.update()
+  end
+
+  @doc """
     will generate a query to fetch all active promocodes without pagination
     I have used this function, so that I can reuse it later (can be resused multiple times)
   """
