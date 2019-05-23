@@ -34,7 +34,7 @@ defmodule Sboda.DirectionApi do
       {:ok, json_map} ->
         status = json_map |> get_in(["status"])
 
-        if(status == "NOT_FOUND") do
+        if(status == "NOT_FOUND" || status == "ZERO_RESULTS") do
           :error
         else
           polyline_string =
