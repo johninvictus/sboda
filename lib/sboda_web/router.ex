@@ -23,7 +23,8 @@ defmodule SbodaWeb.Router do
   scope "/api/v1", SbodaWeb do
     pipe_through :api
 
-    resources "/promocodes", PromocodeController, only: [:index]
+    resources "/promocodes", PromocodeController, only: [:index, :create]
+    get("/promocodes/active", PromocodeController, :active)
     post("ride/request", RideController, :request)
   end
 end

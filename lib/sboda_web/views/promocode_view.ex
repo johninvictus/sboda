@@ -7,6 +7,14 @@ defmodule SbodaWeb.PromocodeView do
       %{ data: render_many(promos, PromocodeView, "promocode.json", as: :promocode)}
   end
 
+  def render("create.json", %{promocode: promo}) do
+    %{ data: render_one(promo, PromocodeView, "promocode.json", as: :promocode)}
+  end
+
+  def render("active.json", %{promocodes: promos}) do
+      %{ data: render_many(promos, PromocodeView, "promocode.json", as: :promocode)}
+  end
+
   def render("promocode.json", %{promocode: promo}) do
     %Geo.Point{coordinates: {lgt, lat}} =  promo.point
 

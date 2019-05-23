@@ -18,7 +18,7 @@ defmodule Sboda.Marketing do
     iex> Sboda.Marketing.create_promocode(%{ all data here})
        {:error, %Ecto.Changeset{}}
   """
-
+  @spec create_promocode(%{}) :: {:ok, %Promocode{}} | {:error, %Ecto.Changeset{}}
   def create_promocode(attr \\ Map.new()) do
     %Promocode{}
     |> Promocode.changeset(attr)
@@ -62,6 +62,7 @@ defmodule Sboda.Marketing do
     iex> get_active_promocode_by_title
       nil
   """
+  @spec get_active_promocode_by_title(binary()) :: %Promocode{} | nil
   def get_active_promocode_by_title(title) do
     Promocode
     |> promocode_by_title_query(title)
@@ -96,6 +97,7 @@ defmodule Sboda.Marketing do
   iex> Sboda.Marketing.get_active_promocode()
     []
   """
+  @spec get_active_promocodes() :: list(%Sboda.Marketing.Promocode{}) | []
   def get_active_promocodes do
     Promocode
     |> active_promo_query()

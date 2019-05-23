@@ -2,6 +2,8 @@ defmodule SbodaWeb.PromocodeController do
   use SbodaWeb, :controller
   alias Sboda.Marketing
 
+  action_fallback(SbodaWeb.FallbackController)
+
   @doc """
   get all promocodes
   """
@@ -11,5 +13,37 @@ defmodule SbodaWeb.PromocodeController do
     conn
     |> put_status(:ok)
     |> render("index.json", promocodes: all_promocodes)
+  end
+
+  @doc """
+  Required fields
+
+  [:title, :lat, :logt, :expir_str, :worth_str, :distance, :currency]
+    :active is not required
+
+    This will create a new promocode
+  """
+  def create(conn, params) do
+
+    with {:ok, promo} <- Marketing.create_promocode(params) do
+      conn
+      |> put_status(:created)
+      |> render("create.json", promocode: promo)
+    end
+  end
+
+  @doc """
+  This function is going to retrieve all active promocodes
+  """
+  def active(conn, _params) do
+    with p_list when is_list(p_list) <- Marketing.get_active_promocodes()  do
+      conn
+      |> put_status(:ok)
+      |> render("active.json", promocodes: p_list)
+
+    else
+      _->
+      {:error, "Something went wrong"}
+    end
   end
 end
