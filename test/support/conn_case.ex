@@ -20,6 +20,8 @@ defmodule SbodaWeb.ConnCase do
       # Import conveniences for testing with connections
       use Phoenix.ConnTest
       alias SbodaWeb.Router.Helpers, as: Routes
+      alias SbodaWeb.Support.APICall
+      import SbodaWeb.ConnCaseHelper
 
       # The default endpoint for testing
       @endpoint SbodaWeb.Endpoint
