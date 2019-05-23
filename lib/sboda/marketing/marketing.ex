@@ -181,7 +181,7 @@ defmodule Sboda.Marketing do
   eg. Since this feature is not requested this function is an extra
       This query requires the **POSTGIS** extention
   """
-  def within_event_radius(query, point, radius_in_m) do
+  def within_source_radius(query, point, radius_in_m) do
     {lng, lat} = point.coordinates
 
     from promo in query,
@@ -201,7 +201,7 @@ defmodule Sboda.Marketing do
   """
   def get_active_promocodes_within(center_point, radius_in_m) do
     Promocode
-    |> within_event_radius(center_point, radius_in_m)
+    |> within_source_radius(center_point, radius_in_m)
     |> active_promo_query()
     |> Repo.all()
   end

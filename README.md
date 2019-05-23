@@ -127,3 +127,10 @@ destination and origin if promo code is valid and an error otherwise.
 >> POST_URL: http://localhost:4000/api/v1/ride/request
  ```
  To generate the polyline I created a simple **DirectionApi** wrapper to get the polystring and decode into a list of coordinates.
+
+### Extras
+- [x] since am using Postgis I am able to list all active promocodes withing my origin or point.
+- [x] Created endpoints for getting all promocodes, updating radius and getting active promocodes. 
+
+`Sboda.Marketing.get_active_promocodes_within/2`
+`

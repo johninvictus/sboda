@@ -183,7 +183,7 @@ defmodule Sboda.MarketingTest do
     assert code.title == "SAFE_BODA_EVENT_1"
   end
 
-  test "within_event_radius" do
+  test "within_source_radius" do
     point = %Geo.Point{coordinates: {-87.9079503, 43.0384303}, srid: 4326}
     to_test_promocodes_around_fixture()
 
