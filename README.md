@@ -20,7 +20,7 @@ iex> mix test
 
 #### TASKS
 
--[ X ]- **Generation of new promo codes for events** <br>
+-[ X ]- **Generation of new promo codes for events** </br>
 
    Function: Sboda.Marketing.create_promocode(attr)
 
@@ -40,25 +40,25 @@ iex> mix test
       {:ok, %Promocode{}} | {:error, %Ecto.Changeset{}}
     ```
     Test: tested in Sboda.MarketingTest
-  <br>
+  </br>
 **-[ X ]- The promo code is worth a specific amount of ride**
 
-<br>
+</br>
     Promo code has a field of type money that is accepting UGX or KES currency
 
 
 **-[ X ]- The promo code can expire**
-<br>
+</br>
 
  Promo code has expir field which is a NaiveDateTime, that can be used to check if the promo is expired
 
 **-[ X ]- Can be deactivated**
-<br>
+</br>
 
    Promo code has an active field, which can be set to false hence deactivating the code.
 
 **-[ X ]- Return active promo codes**
-<br>
+</br>
 
   For this task am returning promo codes that have the active field set to true and expir date is bigger or equal to date now.
 
@@ -71,7 +71,7 @@ iex> mix test
 
 
 **-[ X ]- Return all promo codes**
-<br>
+</br>
 
   Here am returning all promo codes from the database
 
@@ -86,7 +86,7 @@ iex> mix test
 **-[ X ]- Only valid when user’s pickup or destination is within x radius of the event venue**
 
      Here I was checking if destination or origin is within the radius of the promocode applied if yes. use it, else: return an error
-<br>
+</br>
 
 
   **Functions**
@@ -114,11 +114,11 @@ iex> mix test
 the promo code. The API should return the promo code details and a polyline using the
 destination and origin if promo code is valid and an error otherwise.
 **
-<br>
+</br>
 
 For this task I created
 `post("/ride/request", RideController, :request)`
-<br>
+</br>
 
 Endpoint which takes in origin, destination and the promocode title. `@params`
 
