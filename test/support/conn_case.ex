@@ -35,6 +35,20 @@ defmodule SbodaWeb.ConnCase do
       Ecto.Adapters.SQL.Sandbox.mode(Sboda.Repo, {:shared, self()})
     end
 
+    launch_api()
+
     {:ok, conn: Phoenix.ConnTest.build_conn()}
+  end
+
+  def launch_api do
+    # set up config for serving
+    endpoint_config =
+      Application.get_env(:sboda, SbodaWeb.Endpoint)
+      |> Keyword.put(:server, true)
+    :ok = Application.put_env(:sboda, SbodaWeb.Endpoint, endpoint_config)
+
+    # restart our application with serving enabled
+    :ok = Application.stop(:sboda)
+    :ok = Application.start(:sboda)
   end
 end

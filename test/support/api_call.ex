@@ -28,8 +28,8 @@ defmodule SbodaWeb.Support.APICall do
   end
 
   # API url helper - will work in any env
-  defp api_url do
-    endpoint_config = Application.get_env(:calculon, Calculon.Endpoint)
+  def api_url do
+    endpoint_config = Application.get_env(:sboda, SbodaWeb.Endpoint)
     host = Keyword.get(endpoint_config, :url) |> Keyword.get(:host)
     port = Keyword.get(endpoint_config, :http) |> Keyword.get(:port)
 
