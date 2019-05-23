@@ -23,4 +23,18 @@ defmodule SbodaWeb.PromocodeControllerTest do
     promo_map = JSON.decode!(body) |> get_in(["data"]) |> Enum.at(0)
     assert get_in(promo_map, ["title"]) == @data_attrs.title
   end
+
+  test "POST /promocodes" do
+    headers = [{"Content-type", "application/json"}]
+
+    response =
+      HTTPoison.post!(
+        APICall.api_url() <> "/promocodes",
+        JSON.encode!(@data_attrs),
+        headers,
+        []
+      )
+
+      assert %HTTPoison.Response{body: body, status_code: 201} = response
+  end
 end
