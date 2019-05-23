@@ -25,7 +25,7 @@ defmodule SbodaWeb.Router do
 
     resources "/promocodes", PromocodeController, only: [:index, :create]
     get("/promocodes/active", PromocodeController, :active)
-    post("/promocodes/configure_title", PromocodeController, :title_config)
+    post("/promocodes/config_radius", PromocodeController, :config_radius)
     post("/ride/request", RideController, :request)
   end
 end

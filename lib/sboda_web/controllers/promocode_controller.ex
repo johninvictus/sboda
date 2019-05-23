@@ -50,11 +50,15 @@ defmodule SbodaWeb.PromocodeController do
   @doc """
   change radius of promocode when given its title
   """
-  def title_config(conn, %{title: title}) do
-    with {:ok, promo} <- Marketing.change_radius(title) do
+def config_radius(conn, %{"title" => title, "radius" => radius}) do
+    with {:ok, promo} <- Marketing.change_radius(title, radius) do
       conn
       |> put_status(:ok)
       |> render("title_config.json", promocode: promo)
     end
+  end
+
+  def config_radius(_conn, _param) do
+    {:error, "Provide valid parameters"}
   end
 end

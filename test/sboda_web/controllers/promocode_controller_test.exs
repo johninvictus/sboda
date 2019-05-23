@@ -41,12 +41,34 @@ defmodule SbodaWeb.PromocodeControllerTest do
   end
 
   test "GET /promocodes/active" do
-     add_data()
+    add_data()
 
     assert %HTTPoison.Response{body: body, status_code: 200} =
              HTTPoison.get!(APICall.api_url() <> "/promocodes/active")
 
     promo_map = JSON.decode!(body) |> get_in(["data"]) |> Enum.at(0)
     assert get_in(promo_map, ["title"]) == @data_attrs.title
+  end
+
+   test "POST /promocodes/config_radius" do
+    add_data()
+
+    headers = [{"Content-type", "application/json"}]
+
+    title_param = %{title: "SAFE_BODA_EVENT", radius: 234.0 }
+
+    response =
+      HTTPoison.post!(
+        APICall.api_url() <> "/promocodes/config_radius",
+        JSON.encode!(title_param),
+        headers,
+        []
+      )
+
+    assert %HTTPoison.Response{body: body, status_code: 200} = response
+    distance = JSON.decode!(body) |> get_in(["data", "distance"])
+
+    # assert  title_param.distance == distance
+    assert title_param.radius == distance
   end
 end
