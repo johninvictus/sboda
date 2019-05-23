@@ -64,7 +64,7 @@ defmodule Sboda.RideTest do
       }
 
       # invalid type
-      assert {:changeset_error, %Ecto.Changeset{valid?: false}} ==  Ride.request(param)
+      assert {:changeset_error, %Ecto.Changeset{valid?: false}} =  Ride.request(param)
     end
   end
 end
