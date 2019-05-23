@@ -136,6 +136,7 @@ defmodule Sboda.Marketing do
   @doc """
   This function will check if the given title is available before changing it radius
   """
+  @spec change_radius(term(), term()) :: {:ok, %Promocode{}} | {:changeset_error, %Ecto.Changeset{}} | {:error, term()}
   def change_radius(title, radius) do
     with promocode when is_map(promocode) <- get_promocode_by_title(title),
          {:ok, promo} <- configure_promocode_radius(promocode, radius) do

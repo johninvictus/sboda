@@ -19,13 +19,13 @@ defmodule SbodaWeb.Router do
     get "/", PageController, :index
   end
 
-  # can use graphql to cut out versioning
+  # can use graphql to cut out versioning and many other challenges
   scope "/api/v1", SbodaWeb do
     pipe_through :api
 
-    resources "/promocodes", PromocodeController, only: [:index, :create]
-    get("/promocodes/active", PromocodeController, :active)
-    post("/promocodes/config_radius", PromocodeController, :config_radius)
-    post("/ride/request", RideController, :request)
+    resources "/promocodes", PromocodeController, only: [:index, :create] # create and also list all promocodes
+    get("/promocodes/active", PromocodeController, :active) # list all active promocodes
+    post("/promocodes/config_radius", PromocodeController, :config_radius) # change the radius of the event/promocode
+    post("/ride/request", RideController, :request) #request a ride with promocode
   end
 end
