@@ -19,7 +19,9 @@ defmodule SbodaWeb.PromocodeControllerTest do
   test "GET /promocodes" do
     add_data()
 
-    assert %HTTPoison.Response{body: body, status_code: 200} =   HTTPoison.get!(APICall.api_url() <> "/promocodes")
+    assert %HTTPoison.Response{body: body, status_code: 200} =
+             HTTPoison.get!(APICall.api_url() <> "/promocodes")
+
     promo_map = JSON.decode!(body) |> get_in(["data"]) |> Enum.at(0)
     assert get_in(promo_map, ["title"]) == @data_attrs.title
   end
@@ -35,6 +37,16 @@ defmodule SbodaWeb.PromocodeControllerTest do
         []
       )
 
-      assert %HTTPoison.Response{body: body, status_code: 201} = response
+    assert %HTTPoison.Response{body: body, status_code: 201} = response
+  end
+
+  test "GET /promocodes/active" do
+     add_data()
+
+    assert %HTTPoison.Response{body: body, status_code: 200} =
+             HTTPoison.get!(APICall.api_url() <> "/promocodes/active")
+
+    promo_map = JSON.decode!(body) |> get_in(["data"]) |> Enum.at(0)
+    assert get_in(promo_map, ["title"]) == @data_attrs.title
   end
 end
