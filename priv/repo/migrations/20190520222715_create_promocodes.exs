@@ -18,6 +18,7 @@ defmodule Sboda.Repo.Migrations.CreatePromocodes do
       timestamps()
     end
 
+    create(unique_index(:promocodes, [:title]))
     # This can store a "standard GPS" (epsg4326) coordinate pair {longitude,latitude}.
     execute("SELECT AddGeometryColumn ('promocodes','point',4326,'POINT',2)")
 

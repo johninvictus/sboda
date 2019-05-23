@@ -1,7 +1,7 @@
 defmodule Sboda.Marketing.Promocode do
   @moduledoc """
   This module takes will take raw input
-    |> validate them 
+    |> validate them
     |> convert the to required format
 
     Giving this module validation power will reduce amount of code writed at the Web Module
@@ -52,6 +52,7 @@ defmodule Sboda.Marketing.Promocode do
       :distance,
       :currency
     ])
+    |> unique_constraint(:title)
     # make sure either KES or UGX is included
     |> validate_inclusion(:currency, @type_currency_include)
     # should be 0.00
