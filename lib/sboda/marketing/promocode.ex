@@ -12,6 +12,7 @@ defmodule Sboda.Marketing.Promocode do
   alias Sboda.Money
   alias Sboda.Marketing.Promocode
   alias Sboda.Gex
+  alias Sboda.Custom.Randomizer
 
   @type_currency_include ~w(KES UGX)
 
@@ -45,7 +46,6 @@ defmodule Sboda.Marketing.Promocode do
     |> cast(attrs, [:title, :lat, :logt, :expir_str, :worth_str, :active, :distance, :currency])
     # exclude active since it has a default value
     |> validate_required([
-      :title,
       :lat,
       :logt,
       :expir_str,
@@ -53,6 +53,7 @@ defmodule Sboda.Marketing.Promocode do
       :distance,
       :currency
     ])
+    |> check_if_title_added()
     |> unique_constraint(:title)
     # make sure either KES or UGX is included
     |> validate_inclusion(:currency, @type_currency_include)
@@ -72,6 +73,27 @@ defmodule Sboda.Marketing.Promocode do
     promocode
     |> prepare_promocode()
     |> changeset(attrs)
+  end
+
+  # If title is added, return changeset else generate a unique code and add it to changeset
+  def check_if_title_added(changeset) do
+    case changeset do
+      %Ecto.Changeset{valid?: true} ->
+        # check if is set
+        data = changeset |> apply_changes()
+
+        if(data.title == nil) do
+          date = NaiveDateTime.utc_now()
+          promo = "PROMO_#{Randomizer.randomizer(4, :upcase)}_#{date.month}"
+
+          changeset |> put_change(:title, promo)
+        else
+          changeset
+        end
+
+      %Ecto.Changeset{valid?: false} ->
+        changeset
+    end
   end
 
   # This functions takes in latitude and longitude and converts them into a Geo.Point

@@ -18,6 +18,16 @@ defmodule Sboda.MarketingTest do
       active: true
     }
 
+    @data_attrs_not_title %{
+      lat: 43.0387105,
+      logt: -87.9074701,
+      expir_str: "2019-07-01 23:00:07",
+      worth_str: "250.00",
+      distance: 400.3,
+      currency: "KES",
+      active: true
+    }
+
     def promocode_fixture(attr \\ Map.new()) do
       {:ok, promo} =
         attr
@@ -152,6 +162,12 @@ defmodule Sboda.MarketingTest do
     assert {:ok, %Sboda.Marketing.Promocode{} = promo} = Marketing.create_promocode(@data_attrs)
     assert promo.title == @data_attrs.title
   end
+
+  test "generate promocode title if not is provided" do
+    assert {:ok, %Sboda.Marketing.Promocode{} = promo} =
+             Marketing.create_promocode(@data_attrs_not_title)
+
+    assert promo.title =~ "PROMO_"  end
 
   test "list all promocodes" do
     # null the virtual fields, for test purposes
